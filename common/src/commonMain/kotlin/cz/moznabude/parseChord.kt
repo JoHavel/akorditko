@@ -63,10 +63,10 @@ fun ParserScope.parseAny(vararg needles: String, action: ParserScope.(String) ->
     return false
 }
 
-fun ParserScope.dim() = parseAny("dim") {
+fun ParserScope.dim() = parseAny("dim7", "dim") {
     chord.makeMinor()
     chord.makeAugmented()
-    chord.intervals[Interval.m7] = true // TODO setting if dim is always 7
+    chord.intervals[Interval.M6] = true // TODO setting if dim is always bm7
 }
 
 fun ParserScope.seventh() = parseAny("7") {
