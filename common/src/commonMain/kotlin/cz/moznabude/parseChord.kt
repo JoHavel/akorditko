@@ -25,7 +25,7 @@ fun parseKey(string: String, s2k: String2Key = string2Key, index: Int = 0): Pair
 data class ParserScope(val fullString: String, var index: Int = 0, var chord: Chord, val s2k: String2Key)
 typealias ModificationParser = ParserScope.() -> Boolean
 
-fun parseChord(parsers: List<ModificationParser>, string: String, s2k: String2Key = string2Key): Pair<Chord, Int> {
+fun parseChord(parsers: List<ModificationParser>, string: String, s2k: String2Key = string2Key): Pair<Chord, String> {
     val stringMWhites = string.filterNot { it.isWhitespace() }
     val (key, length) = parseKey(stringMWhites, s2k)
     val state = ParserScope(stringMWhites, length, major(key), s2k)
@@ -36,7 +36,7 @@ fun parseChord(parsers: List<ModificationParser>, string: String, s2k: String2Ke
         }
     }
 
-    return state.chord to state.index
+    return state.chord to stringMWhites.substring(0, state.index)
 }
 
 
@@ -120,7 +120,7 @@ fun ParserScope.bass(): Boolean {
 
 
 
-fun parseFull(string: String, s2k: String2Key = string2Key): Pair<Chord, Int> = parseChord(
+fun parseFull(string: String, s2k: String2Key = string2Key): Pair<Chord, String> = parseChord(
     listOf(
         ParserScope::dim,
         ParserScope::seventh,
@@ -138,7 +138,7 @@ fun ParserScope.ignoreAll() = parseAny(
     "aug", "+", "add9", "add11", "add13"//, "b5", "b9", "b11", "b13", "♭9", "♭11", "♭13", "#9, #11, #13", "♯9, ♯11, ♯13"
 ) {}
 
-fun parseSimplified(string: String, s2k: String2Key = string2Key): Pair<Chord, Int> = parseChord(
+fun parseSimplified(string: String, s2k: String2Key = string2Key): Pair<Chord, String> = parseChord(
     listOf(
         ParserScope::dim,
         ParserScope::seventh,
