@@ -1,7 +1,7 @@
-package cz.moznabude
+package cz.moznabude.akorditko
 
-import cz.moznabude.theory.Chord
-import cz.moznabude.theory.Intervals
+import cz.moznabude.akorditko.theory.Chord
+import cz.moznabude.akorditko.theory.Intervals
 import kotlin.math.max
 import kotlin.math.min
 

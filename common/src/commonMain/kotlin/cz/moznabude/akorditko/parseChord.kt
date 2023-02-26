@@ -1,6 +1,6 @@
-package cz.moznabude
+package cz.moznabude.akorditko
 
-import cz.moznabude.theory.*
+import cz.moznabude.akorditko.theory.*
 
 fun String.continuesWith(str: String, index: Int): Boolean {
     if (this.length < index + str.length) return false

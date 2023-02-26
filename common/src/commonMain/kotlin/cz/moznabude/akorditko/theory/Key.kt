@@ -1,4 +1,4 @@
-package cz.moznabude.theory
+package cz.moznabude.akorditko.theory
 
 enum class Key(val transposition: Int) {
     C(0),

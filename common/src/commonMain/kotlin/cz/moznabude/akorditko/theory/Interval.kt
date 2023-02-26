@@ -1,4 +1,4 @@
-package cz.moznabude.theory
+package cz.moznabude.akorditko.theory
 
 typealias Intervals = MutableList<Boolean>
 

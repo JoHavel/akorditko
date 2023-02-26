@@ -1,4 +1,4 @@
-package cz.moznabude.theory
+package cz.moznabude.akorditko.theory
 
 data class Chord(var intervals: Intervals, var key: Key, var bass: Int? = null, private var inC: Boolean = true) {
     fun intervals2notes() {
