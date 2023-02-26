@@ -105,7 +105,7 @@ fun ParserScope.aug() = parseAny("aug5", "aug", "+") {
 }
 
 fun ParserScope.bass(): Boolean {
-    if (fullString.continuesWith("/", index)) return false
+    if (!fullString.continuesWith("/", index)) return false
     try {
         val (key, indexShift) = parseKey(fullString, s2k, index + 1)
         index += indexShift + 1
