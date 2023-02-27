@@ -47,7 +47,7 @@ fun Chord.makeMinor() {
     intervals[Interval.m3] = true
 }
 
-fun Chord.makeAugmented() {
+fun Chord.makeDiminished5() {
     intervals[Interval.P5] = false
     intervals[Interval.TRITONE] = true
 }
@@ -65,7 +65,7 @@ fun ParserScope.parseAny(vararg needles: String, action: ParserScope.(String) ->
 
 fun ParserScope.dim() = parseAny("dim7", "dim") {
     chord.makeMinor()
-    chord.makeAugmented()
+    chord.makeDiminished5()
     chord.intervals[Interval.M6] = true // TODO setting if dim is always bm7
 }
 
@@ -100,8 +100,13 @@ fun ParserScope.nth() = parseAny("2", "4", "6", "add9", "add11", "add13", "9", "
 
 // TODO "b5", "b9", "b11", "b13", "♭9", "♭11", "♭13", "#9, #11, #13", "♯9, ♯11, ♯13"
 
-fun ParserScope.aug() = parseAny("aug5", "aug", "+") {
-    chord.makeAugmented()
+fun ParserScope.aug() = parseAny("aug5", "aug", "+", "5+") {
+    chord.intervals[Interval.P5] = false
+    chord.intervals[Interval.m6] = true
+}
+
+fun ParserScope.dim5() = parseAny("dim5", "-", "5-") {
+    chord.makeDiminished5()
 }
 
 fun ParserScope.bass(): Boolean {
@@ -122,6 +127,7 @@ fun ParserScope.bass(): Boolean {
 
 fun parseFull(string: String, s2k: String2Key = string2Key): Pair<Chord, String> = parseChord(
     listOf(
+        ParserScope::dim5,
         ParserScope::dim,
         ParserScope::seventh,
         ParserScope::sus,
@@ -134,7 +140,8 @@ fun parseFull(string: String, s2k: String2Key = string2Key): Pair<Chord, String>
 )
 
 fun ParserScope.ignoreAll() = parseAny(
-    "moll", "mi", "m", "maj7", "maj", "M7", "Δ", "⑦", "7", "dim", "sus", "2", "4", "6", "9", "11", "13", "aug5",
+    "moll", "mi", "m", "maj7", "maj", "M7", "Δ", "⑦", "7", "dim5", "5-", "dim", "sus", "2", "4", "6", "9", "11", "13",
+    "aug5", "5+",
     "aug", "+", "add9", "add11", "add13"//, "b5", "b9", "b11", "b13", "♭9", "♭11", "♭13", "#9, #11, #13", "♯9, ♯11, ♯13"
 ) {}
 
