@@ -170,8 +170,6 @@ fun ParserScope.bass(): Boolean {
     } catch (_: Exception) {
         return false
     }
-
-    chord.intervals[Interval.M7] = true
     return true
 }
 
