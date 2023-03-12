@@ -32,4 +32,4 @@ for the web. So UI must be written two times. Moreover, Android and desktop need
 
 Therefore, UI for Android and desktop is implemented in the [module common](common/src/commonMain/kotlin/cz/moznabude/akorditko/App.kt)
 because I hope that one day it will work for JS too, and its configuration for Android is in the [module android](android), and
-the entry point for desktop is in the [module desktop](desktop). JS has its implementation of UI in the [module js](js).
+the entry point for desktop is in the [module desktop](desktop). JS has its implementation of UI in the [module js](js), the 'copy' of Android and desktop GUI written for JS is in [module js](js/src/jsMain/kotlin/cz/moznabude/akorditko/App.kt) too.
