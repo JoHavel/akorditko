@@ -5,18 +5,37 @@ import cz.moznabude.akorditko.theory.Intervals
 import kotlin.math.max
 import kotlin.math.min
 
+/**
+ * ConcertA in our numbering
+ */
 const val concertA = 9
+
+/**
+ * Midi note number is our number + 60
+ */
 const val diff2midi = 60
 
+/**
+ * Standard guitar tuning (E2, A2, D3, G3, H3, E4)
+ */
 val standardGuitarTuning = listOf(-20, -15, -10, -5, -1, 4)
 
+/**
+ * Engine ([Chord] -> pitches[^1]) for plucked string instrument which is defined by its [tuning].
+ * [^1]: In this case not pitches but fret for every string.
+ */
 class FretEngine(private val tuning: List<Int>) {
+
+    /**
+     * Returns [List] of variants how to play [chord]. Each variant has number -- the fret -- for every string starting
+     * from last string, ending at first string which may be played.
+     */
     fun getFrets(chord: Chord): List<List<Int>> {
         val ans = mutableListOf<List<Int>>()
 
         chord.bass = chord.bass ?: 0
         chord.intervals[chord.bass!!] = true
-        chord.intervals2notes()
+        chord.intervals2pitches()
 
         val admissibleFrets = List(tuning.size) { mutableListOf<Int>() }
 
@@ -29,7 +48,7 @@ class FretEngine(private val tuning: List<Int>) {
         }
 
         val different = chord.intervals.count { it }
-        val chosen = Intervals(12) { false }
+        val chosen = Intervals()
         val chosenFrets = ArrayDeque<Int>()
         var chosenN = 0
 

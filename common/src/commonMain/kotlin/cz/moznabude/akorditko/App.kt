@@ -14,6 +14,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 
+/**
+ * Main class of GUI. (Currently only for Android and desktop.)
+ */
 @Composable
 fun App() {
     var fingerings by remember { mutableStateOf(emptyList<List<Int>>()) }
@@ -50,6 +53,9 @@ fun App() {
     }
 }
 
+/**
+ * Draw fingering chart from given [frets].
+ */
 @Composable
 fun Fingering(frets: List<Int>) {
     val upper = frets.max()
