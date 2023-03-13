@@ -28,10 +28,10 @@ kotlin {
 
 compose.desktop {
     application {
-        mainClass = "MainKt"
+        mainClass = "cz.moznabude.akorditko.MainKt"
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "akorditko"
+            packageName = "Akorditko"
             packageVersion = "1.0.0"
         }
     }
