@@ -9,7 +9,22 @@ and has a 'multiplatform' UI framework [Compose](https://www.jetbrains.com/lp/co
 The project is built by Gradle (its [configuration](build.gradle.kts) is written in Kotlin). Build needs JDK18 (desktop + Gradle), JDK1.8 (Android), Android SDK (API 33)
 and many others, which Gradle installs automatically.
 
-TODO build.
+### Compile and run
+`gradlew run` for desktop, `gradlew jsBrowserRun` for JS. Android request some IDE (or you can assemble .apk with `gradlew assembleDebug` and install `android/build/outputs/apk/debug/android-debug.apk` manually.)
+
+### Compile and release
+`gradlew assemble` assembles JS (basic html + one JS) and android (apk), result are:
+```
+android/build/outputs/apk/release/android-release-unsigned.apk
+
+js/build/distributions/index.html
+js/build/distributions/js.js
+```
+
+`gradlew desktop:packageReleaseMsi` or `gradlew desktop:packageReleaseDeb` assembles desktop installer package, found in
+```
+desktop/build/compose/binaries/main-release/
+```
 
 ### Parts
 Most of the project is in the [module common](common/src/commonMain/kotlin/cz/moznabude/akorditko), which implements things
