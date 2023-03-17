@@ -49,4 +49,5 @@ private val nonUnicodeS2KWithH: String2Key =
 /**
  * German (`H` instead of `B`) [String2Key] mapping [String] keys to [Key].
  */
-val string2KeyWithH: String2Key = (unicodeS2K + nonUnicodeS2K + ("B" to Key.Bb)).sortedByDescending { it.first.length }
+val string2KeyWithH: String2Key =
+    (unicodeS2KWithH + nonUnicodeS2KWithH + ("B" to Key.Bb)).sortedByDescending { it.first.length }
