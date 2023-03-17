@@ -6,7 +6,7 @@ Application for showing all possible ways to play a given chord on guitar (or uk
 - 📱Android application (.apk) is at [GitHub](https://github.com/JoHavel/akorditko/releases/download/v1.0.0/akorditko.apk).
 - 💻🪟 On Windows app can be installed with [installer from GitHub](https://github.com/JoHavel/akorditko/releases/download/v1.0.0/Akorditko-1.0.0.msi).
 - 💻🐧 I haven't compiled an installer for Linux yet.
-- 🌐 Web version can be embedded to any HTML by adding [this .js](https://github.com/JoHavel/akorditko/releases/download/v1.0.0/js.js) and inserting `div` with `id="akorditko"` as in [.html](https://github.com/JoHavel/akorditko/releases/download/v1.0.0/index.html).
+- 🌐 Web version can be embedded to any HTML by adding [this .js](https://github.com/JoHavel/akorditko/releases/download/v1.0.0/js.js) and inserting `div` with `id="akorditko"` as in [.html](https://github.com/JoHavel/akorditko/releases/download/v1.0.0/index.html). Settings can be removed with CSS: `#akorditkoSettings {display: none;}`, but currently, there is no easy way to set defaults. 
 
 ### Manual
 - For getting fingering, input the chord in the text field and fingerings will be shown in the standard way.
