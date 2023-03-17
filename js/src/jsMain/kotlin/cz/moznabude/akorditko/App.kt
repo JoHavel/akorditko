@@ -56,7 +56,7 @@ fun Fingering(frets: List<Int>, nOfStrings: Int, style: FingeringStyle) {
     Div({ style { lineHeight(0.px); textAlign("left"); width(width + 3.em) } }) {
         Span({ style { display(DisplayStyle.Block);height(style.firstFretHeight); width(width); background(style.firstFretColor); } }) {}
         for (j in 0 until style.nOfFrets) {
-            for (i in 0..5) {
+            for (i in 0 until nOfStrings) {
                 Span({ style { display(DisplayStyle.InlineBlock);height(style.spaceHeight); width(style.stringWidth); background(if (i >= emptyStringN) style.activeStringColor else style.emptyStringColor); } }) {}
                 if (i >= emptyStringN && frets[i - emptyStringN] - position == j) {
                     Span({
