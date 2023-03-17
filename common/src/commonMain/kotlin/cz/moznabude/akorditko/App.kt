@@ -11,8 +11,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.times
 
 /**
  * Main class of GUI. (Currently only for Android and desktop.)
@@ -22,6 +24,7 @@ fun App() {
     var fingerings by remember { mutableStateOf(emptyList<List<Int>>()) }
     var parsed by remember { mutableStateOf("") }
     var text by remember { mutableStateOf("") }
+    var tuning by remember { mutableStateOf(standardGuitarTuning) }
 
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         TextField(text, onValueChange = {
@@ -30,7 +33,7 @@ fun App() {
                 try {
                     val data = parseFull(it)
                     parsed = data.second
-                    fingerings = FretEngine(standardGuitarTuning).getFrets(data.first)
+                    fingerings = FretEngine(tuning).getFrets(data.first)
                 } catch (_: Exception) {
 
                 }
@@ -46,7 +49,7 @@ fun App() {
         LazyColumn {
             for (frets in fingerings) {
                 item {
-                    Fingering(frets)
+                    Fingering(frets, tuning.size, FingeringStyle.defaultFingeringSettings)
                 }
             }
         }
@@ -54,44 +57,80 @@ fun App() {
 }
 
 /**
- * Draw fingering chart from given [frets].
+ * Draw fingering chart from given [frets] on instrument with [nOfStrings] strings. Styled with [style].
  */
 @Composable
-fun Fingering(frets: List<Int>) {
+fun Fingering(frets: List<Int>, nOfStrings: Int, style: FingeringStyle) {
     val upper = frets.max()
-    val position = if (upper < 5) 1 else frets.filter { it != 0 }.min()
+    val position = if (upper <= style.nOfFrets) 1 else frets.filter { it != 0 }.min()
 
-    val emptyStringN = 6 - frets.size
+    val emptyStringN = nOfStrings - frets.size
+
+    // Width of
+    val width = nOfStrings * style.stringWidth + (nOfStrings - 1) * style.spaceWidth
 
     Row {
         Column {
-            Divider(Modifier.height(2.dp).width(56.dp), Color.Black)
-            for (j in 0..3) {
+            Divider(Modifier.height(style.firstFretHeight).width(width), style.firstFretColor)
+            for (j in 0 until style.nOfFrets) {
                 Row {
-                    for (i in 0..5) {
+                    for (i in 0 until nOfStrings) {
                         Divider(
-                            Modifier.height(20.dp).width(1.dp),
-                            if (i >= emptyStringN) Color.Black else Color.LightGray
+                            Modifier.height(style.spaceHeight).width(style.stringWidth),
+                            if (i >= emptyStringN) style.activeStringColor else style.emptyStringColor
                         )
                         if (i >= emptyStringN && frets[i - emptyStringN] - position == j) {
                             Box(
                                 Modifier
-                                    .offset((-2.5).dp, 8.dp)
-                                    .width(4.dp)
-                                    .height(4.dp)
-                                    .background(Color.Black, CircleShape)
+                                    .offset(
+                                        -style.dotRadius - (style.stringWidth / 2),
+                                        style.spaceHeight / 2 - style.dotRadius
+                                    )
+                                    .width(2 * style.dotRadius)
+                                    .height(2 * style.dotRadius)
+                                    .background(style.dotColor, CircleShape)
                             )
-                            Spacer(modifier = Modifier.width(6.dp))
+                            Spacer(modifier = Modifier.width(style.spaceWidth - 2 * style.dotRadius))
                         } else {
-                            Spacer(modifier = Modifier.width(10.dp))
+                            Spacer(modifier = Modifier.width(style.spaceWidth))
 
                         }
                     }
                 }
-                Divider(Modifier.height(1.dp).width(56.dp), Color.LightGray)
+                Divider(Modifier.height(style.otherFretHeight).width(width), style.otherFretColor)
             }
         }
         if (position > 1) Text(position.toString())
     }
-    Spacer(modifier = Modifier.height(20.dp))
+    Spacer(modifier = Modifier.height(style.interFingeringSpace))
+}
+
+/**
+ * Style for [Fingering].
+ */
+data class FingeringStyle(
+    val nOfFrets: Int = 4,
+    val firstFretHeight: Dp = 2.dp,
+    val firstFretColor: Color = Color.Black,
+    val otherFretHeight: Dp = 1.dp,
+    val otherFretColor: Color = Color.LightGray,
+
+    val activeStringColor: Color = Color.Black,
+    val emptyStringColor: Color = Color.LightGray,
+    val stringWidth: Dp = 1.dp,
+
+    val spaceWidth: Dp = 10.dp,
+    val spaceHeight: Dp = 20.dp,
+
+    val dotRadius: Dp = 2.dp,
+    val dotColor: Color = Color.Black,
+
+    val interFingeringSpace: Dp = 20.dp,
+) {
+    companion object {
+        /**
+         * Default [FingeringStyle].
+         */
+        val defaultFingeringSettings = FingeringStyle()
+    }
 }
