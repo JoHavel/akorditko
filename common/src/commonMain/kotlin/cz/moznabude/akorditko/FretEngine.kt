@@ -21,6 +21,11 @@ const val diff2midi = 60
 val standardGuitarTuning = listOf(-20, -15, -10, -5, -1, 4)
 
 /**
+ * Standard ukulele tuning (G4, C4, E4, A4)
+ */
+val standardUkuleleTuning = listOf(7, 0, 4, 9)
+
+/**
  * Engine ([Chord] -> pitches[^1]) for plucked string instrument which is defined by its [tuning].
  * [^1]: In this case not pitches but fret for every string.
  */

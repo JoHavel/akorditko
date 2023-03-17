@@ -14,8 +14,10 @@ Application for showing all possible ways to play a given chord on guitar (or uk
     - `♯` can be written as `#` and `♭` as `b` (`is` or `es` is not supported).
     - If you find some chord that the app can't parse, don't hesitate to create [issue](https://github.com/JoHavel/akorditko/issues) or write to jonas.havelka at moznabude.cz
 - Barre chords are currently not supported!
-- Other instruments (like ukulele or guitar with nonstandard tuning) are not currently supported!
-- German nomenclature where `B` is written as `H` is not currently supported!
+- Other instruments (like ukulele or guitar with nonstandard tuning) are now supported! (Only plucked string instrument.)
+  - The buttons on the left side. After clicking `Other`, there is an editable list: strings from left to right, 0 = [Middle C](https://en.wikipedia.org/wiki/C_(musical_note)#Middle_C), ±1 means ±1 semi-tone. After clicking `Back`, the button returns instead of the editable list.
+- German nomenclature where `B` is written as `H` is now supported!
+  - The selector at right top of the app.
 
 
 ## Building and development
