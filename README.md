@@ -1,5 +1,21 @@
 # Akorditko ('Chord maker')
-TODO
+Application for showing all possible ways to play a given chord on guitar (or ukulele).
+
+## Running
+- 🌐 Web version is running at <https://moznabude.cz/akorditko>.
+- 📱Android application (.apk) is at [GitHub](https://github.com/JoHavel/akorditko/releases/download/v1.0.0/akorditko.apk).
+- 💻🪟 On Windows app can be installed with [installer from GitHub](https://github.com/JoHavel/akorditko/releases/download/v1.0.0/Akorditko-1.0.0.msi).
+- 💻🐧 I haven't compiled an installer for Linux yet.
+- 🌐 Web version can be embedded to any HTML by adding [this .js](https://github.com/JoHavel/akorditko/releases/download/v1.0.0/js.js) and inserting `div` with `id="akorditko"` as in [.html](https://github.com/JoHavel/akorditko/releases/download/v1.0.0/index.html).
+
+### Manual
+- For getting fingering, input the chord in the text field and fingerings will be shown in the standard way.
+    - Under the text field, there is a currently parsed chord.
+    - `♯` can be written as `#` and `♭` as `b` (`is` or `es` is not supported).
+    - If you find some chord that the app can't parse, don't hesitate to create [issue](https://github.com/JoHavel/akorditko/issues) or write to jonas.havelka at moznabude.cz
+- Barre chords are currently not supported!
+- Other instruments (like ukulele or guitar with nonstandard tuning) are not currently supported!
+- German nomenclature where `B` is written as `H` is not currently supported!
 
 
 ## Building and development
