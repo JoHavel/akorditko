@@ -9,10 +9,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
-import androidx.compose.ui.unit.times
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.*
 import cz.moznabude.akorditko.theory.string2Key
 import cz.moznabude.akorditko.theory.string2KeyWithH
 
@@ -44,8 +42,8 @@ fun App() {
 
     Column {
         Row(modifier = Modifier.fillMaxWidth()) {
-            Row(modifier = Modifier.fillMaxWidth(0.8F), horizontalArrangement = Arrangement.Start) {
-                Text("Tunning: ", modifier = Modifier.align(Alignment.CenterVertically))
+            Row(modifier = Modifier.fillMaxWidth(0.75F), horizontalArrangement = Arrangement.Start) {
+                Text("Tunning: ", modifier = Modifier.align(Alignment.CenterVertically), fontSize = 10.sp)
                 if (custom) {
                     TextField(
                         tuningString,
@@ -58,28 +56,26 @@ fun App() {
 
                             }
                         },
-                        label = { Text("0 = Middle C;    ±1 = ±semi-tone") }
+                        label = { Text("0 = Middle C;       ±1 = ±semi-tone", fontSize = 10.sp) },
+                        textStyle = TextStyle(fontSize = 10.sp),
+                        modifier = Modifier.fillMaxWidth(0.6F),
                     )
                     Spacer(Modifier.width(20.dp))
                     Button(
                         onClick = { custom = false },
-                        modifier = Modifier.height(30.dp),
-                    ) { Text("Back") }
+                    ) { Text("Back", fontSize = 10.sp) }
                 } else {
                     Button(
                         onClick = { tuning = standardGuitarTuning; parse() },
-                        modifier = Modifier.height(30.dp)
-                    ) { Text("Guitar") }
-                    Spacer(Modifier.width(20.dp))
+                    ) { Text("Guitar", fontSize = 10.sp) }
+                    Spacer(Modifier.width(10.dp))
                     Button(
                         onClick = { tuning = standardUkuleleTuning; parse() },
-                        modifier = Modifier.height(30.dp),
-                    ) { Text("Ukulele") }
-                    Spacer(Modifier.width(20.dp))
+                    ) { Text("Ukulele", fontSize = 10.sp) }
+                    Spacer(Modifier.width(10.dp))
                     Button(
                         onClick = { tuningString = tuning.joinToString(", "); custom = true },
-                        modifier = Modifier.height(30.dp),
-                    ) { Text("Other") }
+                    ) { Text("Other", fontSize = 10.sp) }
                 }
             }
 
@@ -90,7 +86,7 @@ fun App() {
                     RadioButton(
                         !BIsH,
                         onClick = { BIsH = false; s2k = string2Key; parse() },
-//                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(25.dp)
                     )
                 }
                 Text("/")
@@ -99,7 +95,7 @@ fun App() {
                     RadioButton(
                         BIsH,
                         onClick = { BIsH = true; s2k = string2KeyWithH; parse() },
-//                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(25.dp)
                     )
                 }
             }
@@ -114,7 +110,7 @@ fun App() {
             Spacer(Modifier.height(5.dp))
 
             Text("Showing:")
-            Text(parsed, fontSize = 2.em)
+            Text(parsed, fontSize = 25.sp)
 
             Spacer(Modifier.height(5.dp))
 
