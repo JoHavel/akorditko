@@ -22,7 +22,7 @@ private val unicodeS2K: String2Key =
     Key.values().map { it.toString().replace("s", "♯").replace("b", "♭") to it }
 
 /**
- * *Unsorted* [String2Key] mapping [String] keys with `#` and `s` to [Key].
+ * *Unsorted* [String2Key] mapping [String] keys with `#` and `b` to [Key].
  */
 private val nonUnicodeS2K: String2Key =
     Key.values().map { it.toString().replace("s", "#") to it }.filterNot { it.first.length == 1 }
@@ -41,7 +41,7 @@ private val unicodeS2KWithH: String2Key =
     Key.values().map { it.toStringWithH().replace("s", "♯").replace("b", "♭") to it }
 
 /**
- * *Unsorted* [String2Key] mapping [String] keys with `#` and `s` to [Key] with `H` instead of `B` (German notation used in half of Europe).
+ * *Unsorted* [String2Key] mapping [String] keys with `#` and `b` to [Key] with `H` instead of `B` (German notation used in half of Europe).
  */
 private val nonUnicodeS2KWithH: String2Key =
     Key.values().map { it.toStringWithH().replace("s", "#") to it }.filterNot { it.first.length == 1 }
