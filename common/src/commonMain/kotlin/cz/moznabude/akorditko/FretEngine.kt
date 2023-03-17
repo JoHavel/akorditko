@@ -87,6 +87,6 @@ class FretEngine(private val tuning: List<Int>) {
             frets.reversed().zip(tuning.reversed()).map { it.first + it.second }.min().mod(12) == chord.bass
                     && frets.count { it != 0 } <= 4 && !frets.contains(12)
 
-        return ans.filter(::suitable).sortedBy { it.filterNot { fret -> fret == 0 }.min() }
+        return ans.filter(::suitable).sortedBy { it.filterNot { fret -> fret == 0 }.minOrNull() ?: 0 }
     }
 }
