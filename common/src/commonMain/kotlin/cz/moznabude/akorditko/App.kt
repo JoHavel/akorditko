@@ -165,6 +165,18 @@ fun ShowFingering(fingering: Fingering, nOfStrings: Int, style: FingeringStyle) 
 
                         }
                     }
+                    if (fingering.barre != null && fingering.barre.at == j + position) {
+                        Divider(
+                            modifier = Modifier
+                                .height(style.dotRadius)
+                                .width((nOfStrings - fingering.barre.from) * (style.spaceWidth + style.stringWidth) + style.spaceWidth)
+                                .offset(
+                                    -(nOfStrings - fingering.barre.from) * (style.spaceWidth + style.stringWidth) - 1.5 * style.spaceWidth,
+                                    style.spaceHeight / 2 - style.dotRadius / 2
+                                ),
+                            color = style.dotColor
+                        )
+                    }
                 }
                 Divider(Modifier.height(style.otherFretHeight).width(width), style.otherFretColor)
             }

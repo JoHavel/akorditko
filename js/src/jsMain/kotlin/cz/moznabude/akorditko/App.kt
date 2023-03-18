@@ -132,7 +132,30 @@ fun Fingering(fingering: Fingering, nOfStrings: Int, style: FingeringStyle) {
                 }
                 Span({ style { display(DisplayStyle.InlineBlock);width(style.spaceWidth) } }) {}
             }
-            if (j == 0 && position > 1) Text(position.toString())
+            if (fingering.barre != null && fingering.barre!!.at == j + position) {
+                Div({
+                    style {
+                        background(style.dotColor)
+                        height(style.dotRadius)
+                        width((nOfStrings - fingering.barre!!.from) * (style.spaceWidth + style.stringWidth) + style.spaceWidth)
+                        display(DisplayStyle.InlineBlock)
+                        position(Position.Relative)
+                        property("top", -0.5 * (style.spaceHeight - style.dotRadius))
+                        property(
+                            "left",
+                            -(nOfStrings - fingering.barre!!.from + 0.5) * (style.spaceWidth + style.stringWidth) - style.spaceWidth,
+                        )
+                    }
+                })
+                if (j == 0 && position > 1) Text(position.toString())
+//                    modifier = Modifier
+//                        .height(style.dotRadius)
+//                        .width((nOfStrings - fingering.barre.from) * (style.spaceWidth + style.stringWidth) + style.spaceWidth)
+//                        .offset(
+//                            -(nOfStrings - fingering.barre.from) * (style.spaceWidth + style.stringWidth) - 1.5 * style.spaceWidth,
+//                            style.spaceHeight / 2 - style.dotRadius / 2
+//                        ),
+            }
             Span({ style { display(DisplayStyle.Block);height(style.otherFretHeight); width(width); background(style.otherFretColor); } }) {}
         }
         Span({ style { display(DisplayStyle.InlineBlock);height(style.interFingeringSpace) } }) {}
