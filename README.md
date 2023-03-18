@@ -9,7 +9,7 @@ Application for showing all possible ways to play a given chord on guitar (or uk
 - 🌐 Web version can be embedded to any HTML by adding [this .js](https://github.com/JoHavel/akorditko/releases/download/v1.0.0/js.js) and inserting `div` with `id="akorditko"` as in [.html](https://github.com/JoHavel/akorditko/releases/download/v1.0.0/index.html). Settings can be removed with CSS: `#akorditkoSettings {display: none;}`, but currently, there is no easy way to set defaults. 
 
 ### Manual
-- For getting fingering, input the chord in the text field and fingerings will be shown in the standard way.
+- For getting fingering, input the chord in the text field and fingerings will be shown in the standard way (gray strings are skipped ones; dots are fingers; empty black strings are played but not "pressed" by the left hand).
     - Under the text field, there is a currently parsed chord.
     - `♯` can be written as `#` and `♭` as `b` (`is` or `es` is not supported).
     - If you find some chord that the app can't parse, don't hesitate to create [issue](https://github.com/JoHavel/akorditko/issues) or write to jonas.havelka at moznabude.cz
@@ -18,6 +18,7 @@ Application for showing all possible ways to play a given chord on guitar (or uk
   - The buttons on the left side. After clicking `Other`, there is an editable list: strings from left to right, 0 = [Middle C](https://en.wikipedia.org/wiki/C_(musical_note)#Middle_C), ±1 means ±1 semi-tone. After clicking `Back`, the button returns instead of the editable list.
 - German nomenclature where `B` is written as `H` is now supported!
   - The selector at right top of the app.
+- Support of a "partial from the right" barre chords or skipped strings in the middle or at the right is not planned.  
 
 
 ## Building and development
