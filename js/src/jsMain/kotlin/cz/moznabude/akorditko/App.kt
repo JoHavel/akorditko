@@ -169,7 +169,7 @@ data class FingeringStyle(
 
     val activeStringColor: String = "black",
     val emptyStringColor: String = "lightgray",
-    val stringWidth: CSSNumeric = 1.px,
+    val stringWidth: CSSNumeric = 1.5.px,
 
     val spaceWidth: CSSNumeric = 10.px,
     val spaceHeight: CSSNumeric = 20.px,
