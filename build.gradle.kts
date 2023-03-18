@@ -1,5 +1,5 @@
 group = "cz.moznabude"
-version = "1.0-SNAPSHOT"
+version = "2.0.0"
 
 allprojects {
     repositories {

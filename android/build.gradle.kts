@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "cz.moznabude"
-version = "1.0-SNAPSHOT"
+version = "2.0.0"
 
 dependencies {
     implementation(project(":common"))
@@ -19,7 +19,7 @@ android {
         minSdk = 24
         targetSdk = 33
         versionCode = 1
-        versionName = "1.0-SNAPSHOT"
+        versionName = "2.0.0"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
