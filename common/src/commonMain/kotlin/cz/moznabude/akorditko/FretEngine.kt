@@ -107,6 +107,7 @@ class FretEngine(private val tuning: List<Int>) {
         val admissibleFingerings = ans.filter { it.admissible() }.sortedBy(Fingering::minFret)
         val admissibleBarreFingerings =
             ans.map { it.toBare() }.filter { it.admissible() }.sortedBy(Fingering::minFret)
+                .filterNot { it.barre!!.from == tuning.size - 1 }
 
         fun rightBass(fingering: Fingering): Boolean =
             fingering.frets.reversed().zip(tuning.reversed()).map { it.first + it.second }.min().mod(12) == chord.bass
