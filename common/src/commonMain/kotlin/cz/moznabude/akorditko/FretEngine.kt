@@ -133,6 +133,10 @@ class FretEngine(private val tuning: List<Int>) {
     private fun Fingering.isNotPrefixOf(other: Fingering): Boolean = other.frets.size > frets.size ||
             frets.subList(frets.size - other.frets.size, frets.size) != other.frets
 
-    private fun Fingering.toBare(): Fingering =
-        Fingering(frets, Barre(minFret(), tuning.size - frets.size + frets.indexOf(minFret())))
+    private fun Fingering.toBare(): Fingering {
+        val minFret = minFret()
+        var from = frets.indexOf(minFret)
+        while (from > 0 && frets[from - 1] != 0) from--
+        return Fingering(frets, Barre(minFret, tuning.size - frets.size + from))
+    }
 }
