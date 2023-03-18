@@ -112,7 +112,10 @@ fun Fingering(fingering: Fingering, nOfStrings: Int, style: FingeringStyle) {
     // whitespace=nowrap in this div prevents text breaking, see https://stackoverflow.com/a/2359459, which
     //         shifts number to the right (otherwise it goes on new line)
     Div({ style { lineHeight(0.px); textAlign("left"); width(width); whiteSpace("nowrap") } }) {
-        Span({ style { display(DisplayStyle.Block);height(style.firstFretHeight); width(width); background(style.firstFretColor); } }) {}
+        Span({ style { display(DisplayStyle.InlineBlock);height(style.firstFretHeight); width(width); background(style.firstFretColor); } }) {}
+        if (position > 1) Span({ style { position(Position.Relative); property("top", "1em") } }) { Text(" $position") }
+        Br()
+
         for (j in 0 until style.nOfFrets) {
             for (i in 0 until nOfStrings) {
                 Span({ style { display(DisplayStyle.InlineBlock);height(style.spaceHeight); width(style.stringWidth); background(if (i >= emptyStringN) style.activeStringColor else style.emptyStringColor); } }) {}
@@ -137,24 +140,16 @@ fun Fingering(fingering: Fingering, nOfStrings: Int, style: FingeringStyle) {
                     style {
                         background(style.dotColor)
                         height(style.dotRadius)
-                        width((nOfStrings - fingering.barre!!.from) * (style.spaceWidth + style.stringWidth) + style.spaceWidth)
+                        width((nOfStrings - fingering.barre!!.from) * (style.spaceWidth + style.stringWidth))
                         display(DisplayStyle.InlineBlock)
                         position(Position.Relative)
                         property("top", -0.5 * (style.spaceHeight - style.dotRadius))
                         property(
                             "left",
-                            -(nOfStrings - fingering.barre!!.from + 0.5) * (style.spaceWidth + style.stringWidth) - style.spaceWidth,
+                            -(nOfStrings - fingering.barre!!.from + 0.5) * (style.spaceWidth + style.stringWidth),
                         )
                     }
                 })
-                if (j == 0 && position > 1) Text(position.toString())
-//                    modifier = Modifier
-//                        .height(style.dotRadius)
-//                        .width((nOfStrings - fingering.barre.from) * (style.spaceWidth + style.stringWidth) + style.spaceWidth)
-//                        .offset(
-//                            -(nOfStrings - fingering.barre.from) * (style.spaceWidth + style.stringWidth) - 1.5 * style.spaceWidth,
-//                            style.spaceHeight / 2 - style.dotRadius / 2
-//                        ),
             }
             Span({ style { display(DisplayStyle.Block);height(style.otherFretHeight); width(width); background(style.otherFretColor); } }) {}
         }
