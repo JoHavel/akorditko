@@ -105,17 +105,22 @@ class FretEngine(private val tuning: List<Int>) {
         dfs(0, 13, 0)
 
         val admissibleFingerings = ans.filter { it.admissible() }.sortedBy(Fingering::minFret)
+        val admissibleBarreFingerings =
+            ans.map { it.toBare() }.filter { it.admissible() }.sortedBy(Fingering::minFret)
 
         fun rightBass(fingering: Fingering): Boolean =
             fingering.frets.reversed().zip(tuning.reversed()).map { it.first + it.second }.min().mod(12) == chord.bass
 
         return admissibleFingerings.filter(::rightBass).removeDuplicate() +
-                admissibleFingerings.filterNot(::rightBass).removeDuplicate()
+                admissibleBarreFingerings.filter(::rightBass).removeDuplicate() +
+                admissibleFingerings.filterNot(::rightBass).removeDuplicate() +
+                admissibleBarreFingerings.filter(::rightBass).removeDuplicate()
     }
 
     private fun Fingering.admissible(): Boolean =
         (frets.count { it != 0 && (barre == null || it != barre.at) } <= if (barre == null) 4 else 3)
                 && !frets.contains(12)
+                && (barre == null || !frets.subList(barre.from - tuning.size + frets.size, frets.size).contains(0) && barre.at != 0)
 
     private fun List<Fingering>.removeDuplicate(): List<Fingering> {
         val ans = mutableListOf<Fingering>()
@@ -127,4 +132,7 @@ class FretEngine(private val tuning: List<Int>) {
 
     private fun Fingering.isNotPrefixOf(other: Fingering): Boolean = other.frets.size > frets.size ||
             frets.subList(frets.size - other.frets.size, frets.size) != other.frets
+
+    private fun Fingering.toBare(): Fingering =
+        Fingering(frets, Barre(minFret(), tuning.size - frets.size + frets.indexOf(minFret())))
 }
