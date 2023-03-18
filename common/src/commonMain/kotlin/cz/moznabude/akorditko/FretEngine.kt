@@ -114,7 +114,7 @@ class FretEngine(private val tuning: List<Int>) {
         return admissibleFingerings.filter(::rightBass).removeDuplicate() +
                 admissibleBarreFingerings.filter(::rightBass).removeDuplicate() +
                 admissibleFingerings.filterNot(::rightBass).removeDuplicate() +
-                admissibleBarreFingerings.filter(::rightBass).removeDuplicate()
+                admissibleBarreFingerings.filterNot(::rightBass).removeDuplicate()
     }
 
     private fun Fingering.admissible(): Boolean =
