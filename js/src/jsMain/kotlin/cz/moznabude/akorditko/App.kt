@@ -14,7 +14,7 @@ import org.jetbrains.compose.web.dom.*
  */
 @Composable
 fun App() {
-    var fingerings by remember { mutableStateOf(emptyList<List<Int>>()) }
+    var fingerings by remember { mutableStateOf(emptyList<Fingering>()) }
     var parsed by remember { mutableStateOf("_") }
     var text by remember { mutableStateOf("") }
     var tuning by remember { mutableStateOf(standardGuitarTuning) }
@@ -27,7 +27,7 @@ fun App() {
             try {
                 val data = parseFull(text, s2k)
                 parsed = data.second
-                fingerings = FretEngine(tuning).getFrets(data.first)
+                fingerings = FretEngine(tuning).getFingerings(data.first)
             } catch (_: Exception) {
 
             }
@@ -96,14 +96,14 @@ fun App() {
 }
 
 /**
- * Draw fingering chart from given [frets] on instrument with [nOfStrings] strings. Styled with [style].
+ * Draw fingering chart from given [fingering] on instrument with [nOfStrings] strings. Styled with [style].
  */
 @Composable
-fun Fingering(frets: List<Int>, nOfStrings: Int, style: FingeringStyle) {
-    val upper = frets.max()
-    val position = if (upper <= style.nOfFrets) 1 else frets.filter { it != 0 }.min()
+fun Fingering(fingering: Fingering, nOfStrings: Int, style: FingeringStyle) {
+    val upper = fingering.max()
+    val position = if (upper <= style.nOfFrets) 1 else fingering.minFret()
 
-    val emptyStringN = nOfStrings - frets.size
+    val emptyStringN = nOfStrings - fingering.frets.size
 
     // Width of
     val width = nOfStrings * (style.stringWidth + style.spaceWidth) - style.spaceWidth
@@ -116,7 +116,7 @@ fun Fingering(frets: List<Int>, nOfStrings: Int, style: FingeringStyle) {
         for (j in 0 until style.nOfFrets) {
             for (i in 0 until nOfStrings) {
                 Span({ style { display(DisplayStyle.InlineBlock);height(style.spaceHeight); width(style.stringWidth); background(if (i >= emptyStringN) style.activeStringColor else style.emptyStringColor); } }) {}
-                if (i >= emptyStringN && frets[i - emptyStringN] - position == j) {
+                if (i >= emptyStringN && fingering.frets[i - emptyStringN] - position == j) {
                     Span({
                         style {
                             display(DisplayStyle.InlineBlock)
@@ -140,7 +140,7 @@ fun Fingering(frets: List<Int>, nOfStrings: Int, style: FingeringStyle) {
 }
 
 /**
- * Style for [Fingering].
+ * Style for [ShowFingering].
  */
 data class FingeringStyle(
     val nOfFrets: Int = 4,

@@ -26,6 +26,22 @@ val standardGuitarTuning = listOf(-20, -15, -10, -5, -1, 4)
 val standardUkuleleTuning = listOf(7, 0, 4, 9)
 
 /**
+ * Barre chord [at] n-th fret, [from] m-th string.
+ */
+data class Barre(val at: Int, val from: Int)
+
+/**
+ * Fingering on guitar consisting of [frets] (from the leftest played string to the rightest string on instrument,
+ * 0 = empty string, otherwise fret (from smallest) where finger is) and maybe [barre].
+ */
+data class Fingering(val frets: List<Int>, val barre: Barre? = null) {
+    fun minFret() = barre?.at ?: (frets.filter { it != 0 }.minOrNull() ?: 0)
+
+    fun max() = max(frets.max(), barre?.at ?: 0)
+}
+
+
+/**
  * Engine ([Chord] -> pitches[^1]) for plucked string instrument which is defined by its [tuning].
  * [^1]: In this case not pitches but fret for every string.
  */
@@ -35,8 +51,8 @@ class FretEngine(private val tuning: List<Int>) {
      * Returns [List] of variants how to play [chord]. Each variant has number -- the fret -- for every string starting
      * from last string, ending at first string which may be played.
      */
-    fun getFrets(chord: Chord): List<List<Int>> {
-        val ans = mutableListOf<List<Int>>()
+    fun getFingerings(chord: Chord): List<Fingering> {
+        val ans = mutableListOf<Fingering>()
 
         chord.bass = chord.bass ?: 0
         chord.intervals[chord.bass!!] = true
@@ -60,7 +76,7 @@ class FretEngine(private val tuning: List<Int>) {
         fun dfs(depth: Int, low: Int, high: Int) {
             if (high - low > 2) return
             if (depth == tuning.size) {
-                if (chosenN == different) ans.add(chosenFrets.toList())
+                if (chosenN == different) ans.add(Fingering(chosenFrets.toList()))
             } else {
                 if (chosenN == 0) dfs(depth + 1, low, high)
                 for (fret in admissibleFrets[depth]) {
@@ -88,10 +104,10 @@ class FretEngine(private val tuning: List<Int>) {
 
         dfs(0, 13, 0)
 
-        fun suitable(frets: List<Int>): Boolean =
-            frets.reversed().zip(tuning.reversed()).map { it.first + it.second }.min().mod(12) == chord.bass
-                    && frets.count { it != 0 } <= 4 && !frets.contains(12)
+        fun suitable(fingering: Fingering): Boolean =
+            fingering.frets.reversed().zip(tuning.reversed()).map { it.first + it.second }.min().mod(12) == chord.bass
+                    && fingering.frets.count { it != 0 } <= 4 && !fingering.frets.contains(12)
 
-        return ans.filter(::suitable).sortedBy { it.filterNot { fret -> fret == 0 }.minOrNull() ?: 0 }
+        return ans.filter(::suitable).sortedBy(Fingering::minFret)
     }
 }

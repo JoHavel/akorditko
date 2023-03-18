@@ -19,7 +19,7 @@ import cz.moznabude.akorditko.theory.string2KeyWithH
  */
 @Composable
 fun App() {
-    var fingerings by remember { mutableStateOf(emptyList<List<Int>>()) }
+    var fingerings by remember { mutableStateOf(emptyList<Fingering>()) }
     var parsed by remember { mutableStateOf("_") }
     var text by remember { mutableStateOf("") }
     var tuning by remember { mutableStateOf(standardGuitarTuning) }
@@ -33,7 +33,7 @@ fun App() {
             try {
                 val data = parseFull(text, s2k)
                 parsed = data.second
-                fingerings = FretEngine(tuning).getFrets(data.first)
+                fingerings = FretEngine(tuning).getFingerings(data.first)
             } catch (_: Exception) {
 
             }
@@ -115,9 +115,9 @@ fun App() {
             Spacer(Modifier.height(5.dp))
 
             LazyColumn {
-                for (frets in fingerings) {
+                for (fingering in fingerings) {
                     item {
-                        Fingering(frets, tuning.size, FingeringStyle.defaultFingeringSettings)
+                        ShowFingering(fingering, tuning.size, FingeringStyle.defaultFingeringSettings)
                     }
                 }
             }
@@ -126,14 +126,14 @@ fun App() {
 }
 
 /**
- * Draw fingering chart from given [frets] on instrument with [nOfStrings] strings. Styled with [style].
+ * Draw fingering chart from given [fingering] on instrument with [nOfStrings] strings. Styled with [style].
  */
 @Composable
-fun Fingering(frets: List<Int>, nOfStrings: Int, style: FingeringStyle) {
-    val upper = frets.max()
-    val position = if (upper <= style.nOfFrets) 1 else frets.filter { it != 0 }.min()
+fun ShowFingering(fingering: Fingering, nOfStrings: Int, style: FingeringStyle) {
+    val upper = fingering.max()
+    val position = if (upper <= style.nOfFrets) 1 else fingering.minFret()
 
-    val emptyStringN = nOfStrings - frets.size
+    val emptyStringN = nOfStrings - fingering.frets.size
 
     // Width of
     val width = nOfStrings * style.stringWidth + (nOfStrings - 1) * style.spaceWidth
@@ -148,7 +148,7 @@ fun Fingering(frets: List<Int>, nOfStrings: Int, style: FingeringStyle) {
                             Modifier.height(style.spaceHeight).width(style.stringWidth),
                             if (i >= emptyStringN) style.activeStringColor else style.emptyStringColor
                         )
-                        if (i >= emptyStringN && frets[i - emptyStringN] - position == j) {
+                        if (i >= emptyStringN && fingering.frets[i - emptyStringN] - position == j) {
                             Box(
                                 Modifier
                                     .offset(
@@ -175,7 +175,7 @@ fun Fingering(frets: List<Int>, nOfStrings: Int, style: FingeringStyle) {
 }
 
 /**
- * Style for [Fingering].
+ * Style for [ShowFingering].
  */
 data class FingeringStyle(
     val nOfFrets: Int = 4,
