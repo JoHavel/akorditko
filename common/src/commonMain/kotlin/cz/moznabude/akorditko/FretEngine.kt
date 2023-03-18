@@ -78,7 +78,6 @@ class FretEngine(private val tuning: List<Int>) {
             if (depth == tuning.size) {
                 if (chosenN == different) ans.add(Fingering(chosenFrets.toList()))
             } else {
-                if (chosenN == 0) dfs(depth + 1, low, high)
                 for (fret in admissibleFrets[depth]) {
                     val note = (fret + tuning[depth]).mod(12)
 
@@ -99,15 +98,33 @@ class FretEngine(private val tuning: List<Int>) {
                         goDeeper()
                     }
                 }
+                if (chosenN == 0) dfs(depth + 1, low, high)
             }
         }
 
         dfs(0, 13, 0)
 
-        fun suitable(fingering: Fingering): Boolean =
-            fingering.frets.reversed().zip(tuning.reversed()).map { it.first + it.second }.min().mod(12) == chord.bass
-                    && fingering.frets.count { it != 0 } <= 4 && !fingering.frets.contains(12)
+        val admissibleFingerings = ans.filter { it.admissible() }.sortedBy(Fingering::minFret)
 
-        return ans.filter(::suitable).sortedBy(Fingering::minFret)
+        fun rightBass(fingering: Fingering): Boolean =
+            fingering.frets.reversed().zip(tuning.reversed()).map { it.first + it.second }.min().mod(12) == chord.bass
+
+        return admissibleFingerings.filter(::rightBass).removeDuplicate() +
+                admissibleFingerings.filterNot(::rightBass).removeDuplicate()
     }
+
+    private fun Fingering.admissible(): Boolean =
+        (frets.count { it != 0 && (barre == null || it != barre.at) } <= if (barre == null) 4 else 3)
+                && !frets.contains(12)
+
+    private fun List<Fingering>.removeDuplicate(): List<Fingering> {
+        val ans = mutableListOf<Fingering>()
+        for (fingering in this)
+            if (ans.isEmpty() || ans.last().isNotPrefixOf(fingering)) ans.add(fingering)
+
+        return ans
+    }
+
+    private fun Fingering.isNotPrefixOf(other: Fingering): Boolean = other.frets.size > frets.size ||
+            frets.subList(frets.size - other.frets.size, frets.size) != other.frets
 }
