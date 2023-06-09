@@ -57,6 +57,7 @@ regardless of compilation (same code for JS, JVM, and JVM on Android).
 - Machinery for converting string to a visual representation of chord for guitar (ukulele, etc.).
   1. We need to convert the string to our representation of the chord for which we have [parser](common/src/commonMain/kotlin/cz/moznabude/akorditko/parseChord.kt).
   2. From our representation we construct all possible ways to play this chord. For this, we have 'Engines', for example [this one](common/src/commonMain/kotlin/cz/moznabude/akorditko/FretEngine.kt) for plucked string instruments.
+     - [Fret engine](common/src/commonMain/kotlin/cz/moznabude/akorditko/FretEngine.kt): Firstly we get all possible "positions of finger" (tones) of the chord. From those, we create all "fingerings" for the chord that uses fingers only in range of 3 frets. Then we filter out unplayable and left only reasonable fingerings divided to groups: normal, barre, with wrong bass and barre with wrong bass.
   3. And then we show this to user with "[Compose](https://www.jetbrains.com/lp/compose-mpp/) magic", which is only part 
   of the project, which is not (entirely) in the [module common](common/src/commonMain/kotlin/cz/moznabude/akorditko).
 

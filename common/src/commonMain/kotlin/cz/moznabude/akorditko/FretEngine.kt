@@ -72,12 +72,18 @@ class FretEngine(private val tuning: List<Int>) {
         )
     }
 
+    /**
+     * Prepares [Chord] for [getFingerings]
+     */
     private fun Chord.prepare() {
         bass = bass ?: 0
         intervals[bass!!] = true
         intervals2pitches()
     }
 
+    /**
+     * Returns all finger positions that can be in [chord]
+     */
     private fun getAdmissibleFrets(chord: Chord): List<List<Int>> {
         val admissibleFrets = List(tuning.size) { mutableListOf<Int>() }
 
@@ -92,6 +98,9 @@ class FretEngine(private val tuning: List<Int>) {
         return admissibleFrets
     }
 
+    /**
+     * Returns all [Fingering]s that could be right ones (it has all tones of [chord] but uses only [admissibleFrets] and is in range of three frets)
+     */
     private fun getPotentialFingerings(chord: Chord, admissibleFrets: List<List<Int>>): List<Fingering> {
         val potentialFingerings = mutableListOf<Fingering>()
 
@@ -134,11 +143,19 @@ class FretEngine(private val tuning: List<Int>) {
         return potentialFingerings
     }
 
+    /**
+     * Returns if [Fingering] makes sense (can be played with human hand and is not unnecessarily complicated)
+     * FIXME maybe it makes sense to use 12th fret
+     */
     private fun Fingering.admissible(): Boolean =
         (frets.count { it != 0 && (barre == null || it != barre.at) } <= if (barre == null) 4 else 3)
                 && !frets.contains(12)
                 && (barre == null || !frets.subList(barre.from - tuning.size + frets.size, frets.size).contains(0) && barre.at != 0)
 
+
+    /**
+     * Clean list from "duplicates" (when one [Fingering] is part (prefix) of other one) leaving only longest [Fingering]s of the "same" ones.
+     */
     private fun List<Fingering>.removeDuplicate(): List<Fingering> {
         val ans = mutableListOf<Fingering>()
         for (fingering in this)
@@ -147,9 +164,15 @@ class FretEngine(private val tuning: List<Int>) {
         return ans
     }
 
+    /**
+     * Returns if [Fingering] is not part (prefix) of [other]
+     */
     private fun Fingering.isNotPrefixOf(other: Fingering): Boolean = other.frets.size > frets.size ||
             frets.subList(frets.size - other.frets.size, frets.size) != other.frets
 
+    /**
+     * Converts [Fingering] to barre [Fingering]
+     */
     private fun Fingering.toBare(): Fingering {
         val minFret = minFret()
         var from = frets.indexOf(minFret)
