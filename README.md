@@ -62,7 +62,7 @@ regardless of compilation (same code for JS, JVM, and JVM on Android).
        only in range of 3 frets. Then we filter out unplayable and left only reasonable fingerings divided to groups:
        normal, barre, with wrong bass and barre with wrong bass.
 
-       [^1]: By DFS with backtracking: For each (chord-admissible) fret on first string we try each (chord-admissible) fret on second string
+       [^1]: By backtracking: For each (chord-admissible) fret on first string we try each (chord-admissible) fret on second string
        etc. And in every step we check that chosen frets are in range of 3 frets and remember, how many different "intervals"
        from the chord are used. At the end of one search (last string) we check if all "intervals" from the chord are in
        fingering and if so, we add the fingering, and in both cases we backtrack and continue searching.
