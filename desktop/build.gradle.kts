@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "cz.moznabude"
-version = "2.0.0"
+version = "3.0.0"
 
 
 kotlin {
@@ -32,7 +32,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Akorditko"
-            packageVersion = "2.0.0"
+            packageVersion = "3.0.0"
         }
     }
 }

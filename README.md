@@ -3,10 +3,10 @@ Application for showing all possible ways to play a given chord on guitar (or uk
 
 ## Running
 - 🌐 Web version is running at <https://moznabude.cz/akorditko>.
-- 📱Android application (.apk) is at [GitHub](https://github.com/JoHavel/akorditko/releases/download/v2.0.0/akorditko.apk).
-- 💻🪟 On Windows app can be installed with [installer from GitHub](https://github.com/JoHavel/akorditko/releases/download/v2.0.0/Akorditko-2.0.0.msi).
+- 📱Android application (.apk) is at [GitHub](https://github.com/JoHavel/akorditko/releases/download/v3.0.0/akorditko.apk).
+- 💻🪟 On Windows app can be installed with [installer from GitHub](https://github.com/JoHavel/akorditko/releases/download/v3.0.0/Akorditko-3.0.0.msi).
 - 💻🐧 I haven't compiled an installer for Linux yet.
-- 🌐 Web version can be embedded to any HTML by adding [this .js](https://github.com/JoHavel/akorditko/releases/download/v2.0.0/js.js) and inserting `div` with `id="akorditko"` as in [.html](https://github.com/JoHavel/akorditko/releases/download/v2.0.0/index.html). Settings can be removed with CSS: `#akorditkoSettings {display: none;}`, but currently, there is no easy way to set defaults. 
+- 🌐 Web version can be embedded to any HTML by adding [this .js](https://github.com/JoHavel/akorditko/releases/download/v3.0.0/js.js) and inserting `div` with `id="akorditko"` as in [.html](https://github.com/JoHavel/akorditko/releases/download/v3.0.0/index.html). Settings can be removed with CSS: `#akorditkoSettings {display: none;}`, but currently, there is no easy way to set defaults. 
 
 ### Manual
 - For getting fingering, input the chord in the text field and fingerings will be shown in the standard way (gray strings are skipped ones; dots are fingers; empty black strings are played but not "pressed" by the left hand).
