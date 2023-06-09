@@ -57,7 +57,15 @@ regardless of compilation (same code for JS, JVM, and JVM on Android).
 - Machinery for converting string to a visual representation of chord for guitar (ukulele, etc.).
   1. We need to convert the string to our representation of the chord for which we have [parser](common/src/commonMain/kotlin/cz/moznabude/akorditko/parseChord.kt).
   2. From our representation we construct all possible ways to play this chord. For this, we have 'Engines', for example [this one](common/src/commonMain/kotlin/cz/moznabude/akorditko/FretEngine.kt) for plucked string instruments.
-     - [Fret engine](common/src/commonMain/kotlin/cz/moznabude/akorditko/FretEngine.kt): Firstly we get all possible "positions of finger" (tones) of the chord. From those, we create all "fingerings" for the chord that uses fingers only in range of 3 frets. Then we filter out unplayable and left only reasonable fingerings divided to groups: normal, barre, with wrong bass and barre with wrong bass.
+     - [Fret engine](common/src/commonMain/kotlin/cz/moznabude/akorditko/FretEngine.kt): Firstly we get all possible
+       "positions of finger" (tones) of the chord. From those, we create[^1] all "fingerings" for the chord that uses fingers
+       only in range of 3 frets. Then we filter out unplayable and left only reasonable fingerings divided to groups:
+       normal, barre, with wrong bass and barre with wrong bass.
+
+       [^1]: By DFS with backtracking: For each (chord-admissible) fret on first string we try each (chord-admissible) fret on second string
+       etc. And in every step we check that chosen frets are in range of 3 frets and remember, how many different "intervals"
+       from the chord are used. At the end of one search (last string) we check if all "intervals" from the chord are in
+       fingering and if so, we add the fingering, and in both cases we backtrack and continue searching.
   3. And then we show this to user with "[Compose](https://www.jetbrains.com/lp/compose-mpp/) magic", which is only part 
   of the project, which is not (entirely) in the [module common](common/src/commonMain/kotlin/cz/moznabude/akorditko).
 
