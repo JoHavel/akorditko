@@ -19,7 +19,7 @@ Application for showing all possible ways to play a given chord on guitar (or uk
 - German nomenclature where `B` is written as `H` is now supported!
   - The selector at right top of the app.
 - Support of a "partial from the right" barre chords or skipped strings in the middle or at the right is not planned.  
-
+- Support of minor chord written as small key (`c` for `Cmi` etc.) is not planned. (First letter is automatically converted to uppercase.)
 
 ## Building and development
 The project is written in [Kotlin](https://kotlinlang.org/) for it is multiplatform (so akorditko can run in JS, Android, and on desktop)

@@ -78,7 +78,7 @@ fun App() {
         Input(InputType.Text) {
             placeholder("Input a chord")
             onInput {
-                text = it.value
+                text = it.value.replaceFirstChar { char -> char.uppercaseChar() }
                 parse()
             }
         }

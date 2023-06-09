@@ -103,7 +103,7 @@ fun App() {
 
         Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
             TextField(text, label = { Text("Input a chord:") }, onValueChange = {
-                text = it
+                text = it.replaceFirstChar { char -> char.uppercaseChar() }
                 parse()
             })
 
