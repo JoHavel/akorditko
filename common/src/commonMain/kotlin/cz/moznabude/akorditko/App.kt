@@ -19,7 +19,7 @@ import cz.moznabude.akorditko.theory.string2KeyWithH
  */
 @Composable
 fun App() {
-    var fingerings by remember { mutableStateOf(emptyList<Fingering>()) }
+    var fingerings by remember { mutableStateOf(emptyList<Pair<List<Fingering>, String>>()) }
     var parsed by remember { mutableStateOf("_") }
     var text by remember { mutableStateOf("") }
     var tuning by remember { mutableStateOf(standardGuitarTuning) }
@@ -115,9 +115,21 @@ fun App() {
             Spacer(Modifier.height(5.dp))
 
             LazyColumn {
-                for (fingering in fingerings) {
-                    item {
-                        ShowFingering(fingering, tuning.size, FingeringStyle.defaultFingeringSettings)
+                for (part_index in fingerings.indices) {
+                    if (fingerings[part_index].first.isEmpty()) continue
+
+                    if (part_index != 0) {
+                        item {
+                            Divider(Modifier.width(tuning.size * FingeringStyle.defaultFingeringSettings.stringWidth + (tuning.size - 1) * FingeringStyle.defaultFingeringSettings.spaceWidth))
+                            Text(fingerings[part_index].second)
+                            Spacer(Modifier.height(FingeringStyle.defaultFingeringSettings.interFingeringSpace))
+                        }
+                    }
+
+                    for (fingering in fingerings[part_index].first) {
+                        item {
+                            ShowFingering(fingering, tuning.size, FingeringStyle.defaultFingeringSettings)
+                        }
                     }
                 }
             }

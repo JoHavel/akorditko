@@ -51,7 +51,7 @@ class FretEngine(private val tuning: List<Int>) {
      * Returns [List] of variants how to play [chord]. Each variant has number -- the fret -- for every string starting
      * from last string, ending at first string which may be played.
      */
-    fun getFingerings(chord: Chord): List<Fingering> {
+    fun getFingerings(chord: Chord): List<Pair<List<Fingering>, String>> {
         val ans = mutableListOf<Fingering>()
 
         chord.bass = chord.bass ?: 0
@@ -112,10 +112,12 @@ class FretEngine(private val tuning: List<Int>) {
         fun rightBass(fingering: Fingering): Boolean =
             fingering.frets.reversed().zip(tuning.reversed()).map { it.first + it.second }.min().mod(12) == chord.bass
 
-        return admissibleFingerings.filter(::rightBass).removeDuplicate() +
-                admissibleBarreFingerings.filter(::rightBass).removeDuplicate() +
-                admissibleFingerings.filterNot(::rightBass).removeDuplicate() +
-                admissibleBarreFingerings.filterNot(::rightBass).removeDuplicate()
+        return listOf(
+            admissibleFingerings.filter(::rightBass).removeDuplicate() to "normal:",
+            admissibleBarreFingerings.filter(::rightBass).removeDuplicate() to "barré:",
+            admissibleFingerings.filterNot(::rightBass).removeDuplicate() to "no bass:",
+            admissibleBarreFingerings.filterNot(::rightBass).removeDuplicate() to "barré,\n no bass:"
+        )
     }
 
     private fun Fingering.admissible(): Boolean =

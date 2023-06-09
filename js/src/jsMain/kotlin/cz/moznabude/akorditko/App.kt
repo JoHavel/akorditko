@@ -14,7 +14,7 @@ import org.jetbrains.compose.web.dom.*
  */
 @Composable
 fun App() {
-    var fingerings by remember { mutableStateOf(emptyList<Fingering>()) }
+    var fingerings by remember { mutableStateOf(emptyList<Pair<List<Fingering>, String>>()) }
     var parsed by remember { mutableStateOf("_") }
     var text by remember { mutableStateOf("") }
     var tuning by remember { mutableStateOf(standardGuitarTuning) }
@@ -89,8 +89,19 @@ fun App() {
     }
 
     Div({ style { width(CSSKeywordValue("min-content").unsafeCast<CSSAutoKeyword>()); margin("auto".asDynamic()) } }) {
-        for (frets in fingerings) {
-            Fingering(frets, tuning.size, FingeringStyle.defaultFingeringSettings)
+        for (part_index in fingerings.indices) {
+            if (fingerings[part_index].first.isEmpty()) continue
+
+            if (part_index != 0) {
+                Span({ style { display(DisplayStyle.Block);height(2.px); width(tuning.size * (FingeringStyle.defaultFingeringSettings.stringWidth + FingeringStyle.defaultFingeringSettings.spaceWidth) - FingeringStyle.defaultFingeringSettings.spaceWidth); background("gray"); } }) {}
+                Text(fingerings[part_index].second)
+                Br()
+                Span({ style { display(DisplayStyle.InlineBlock);height(FingeringStyle.defaultFingeringSettings.interFingeringSpace) } }) {}
+            }
+
+            for (frets in fingerings[part_index].first) {
+                Fingering(frets, tuning.size, FingeringStyle.defaultFingeringSettings)
+            }
         }
     }
 }
