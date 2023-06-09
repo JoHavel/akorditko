@@ -27,6 +27,7 @@ fun App() {
     var s2k by remember { mutableStateOf(string2Key) }
     var BIsH by remember { mutableStateOf(false) }
     var custom by remember { mutableStateOf(false) }
+    var style by remember { mutableStateOf(FingeringStyle.defaultFingeringSettings) }
 
     fun parse() {
         if (text.isNotEmpty()) {
@@ -120,15 +121,15 @@ fun App() {
 
                     if (part_index != 0) {
                         item {
-                            Divider(Modifier.width(tuning.size * FingeringStyle.defaultFingeringSettings.stringWidth + (tuning.size - 1) * FingeringStyle.defaultFingeringSettings.spaceWidth))
+                            Divider(Modifier.width(tuning.size * style.stringWidth + (tuning.size - 1) * style.spaceWidth))
                             Text(fingerings[part_index].second)
-                            Spacer(Modifier.height(FingeringStyle.defaultFingeringSettings.interFingeringSpace))
+                            Spacer(Modifier.height(style.interFingeringSpace))
                         }
                     }
 
                     for (fingering in fingerings[part_index].first) {
                         item {
-                            ShowFingering(fingering, tuning.size, FingeringStyle.defaultFingeringSettings)
+                            ShowFingering(fingering, tuning.size, style)
                         }
                     }
                 }

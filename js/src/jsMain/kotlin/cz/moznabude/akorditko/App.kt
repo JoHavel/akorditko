@@ -21,6 +21,7 @@ fun App() {
     var tuningString by remember { mutableStateOf(tuning.joinToString(", ")) }
     var s2k by remember { mutableStateOf(string2Key) }
     var custom by remember { mutableStateOf(false) }
+    var style by remember { mutableStateOf(FingeringStyle.defaultFingeringSettings) }
 
     fun parse() {
         if (text.isNotEmpty()) {
@@ -93,14 +94,14 @@ fun App() {
             if (fingerings[part_index].first.isEmpty()) continue
 
             if (part_index != 0) {
-                Span({ style { display(DisplayStyle.Block);height(2.px); width(tuning.size * (FingeringStyle.defaultFingeringSettings.stringWidth + FingeringStyle.defaultFingeringSettings.spaceWidth) - FingeringStyle.defaultFingeringSettings.spaceWidth); background("gray"); } }) {}
+                Span({ style { display(DisplayStyle.Block);height(2.px); width(tuning.size * (style.stringWidth + style.spaceWidth) - style.spaceWidth); background("gray"); } }) {}
                 Text(fingerings[part_index].second)
                 Br()
-                Span({ style { display(DisplayStyle.InlineBlock);height(FingeringStyle.defaultFingeringSettings.interFingeringSpace) } }) {}
+                Span({ style { display(DisplayStyle.InlineBlock);height(style.interFingeringSpace) } }) {}
             }
 
             for (frets in fingerings[part_index].first) {
-                Fingering(frets, tuning.size, FingeringStyle.defaultFingeringSettings)
+                Fingering(frets, tuning.size, style)
             }
         }
     }
