@@ -66,9 +66,9 @@ class FretEngine(private val tuning: List<Int>) {
 
         return listOf(
             admissibleFingerings.filter(::rightBass).removeDuplicate() to "normal:",
-            admissibleBarreFingerings.filter(::rightBass).removeDuplicate() to "barré:",
+            admissibleBarreFingerings.filter(::rightBass).removeDuplicate() to "barre:",
             admissibleFingerings.filterNot(::rightBass).removeDuplicate() to "no bass:",
-            admissibleBarreFingerings.filterNot(::rightBass).removeDuplicate() to "barré,\n no bass:"
+            admissibleBarreFingerings.filterNot(::rightBass).removeDuplicate() to "barre,\n no bass:"
         )
     }
 
