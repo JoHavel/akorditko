@@ -52,12 +52,33 @@ class FretEngine(private val tuning: List<Int>) {
      * from last string, ending at first string which may be played.
      */
     fun getFingerings(chord: Chord): List<Pair<List<Fingering>, String>> {
-        val ans = mutableListOf<Fingering>()
+        chord.prepare()
+        val admissibleFrets = getAdmissibleFrets(chord)
+        val potentialFingerings = getPotentialFingerings(chord, admissibleFrets)
 
-        chord.bass = chord.bass ?: 0
-        chord.intervals[chord.bass!!] = true
-        chord.intervals2pitches()
+        val admissibleFingerings = potentialFingerings.filter { it.admissible() }.sortedBy(Fingering::minFret)
+        val admissibleBarreFingerings =
+            potentialFingerings.map { it.toBare() }.filter { it.admissible() }.sortedBy(Fingering::minFret)
+                .filterNot { it.barre!!.from == tuning.size - 1 }
 
+        fun rightBass(fingering: Fingering): Boolean =
+            fingering.frets.reversed().zip(tuning.reversed()).map { it.first + it.second }.min().mod(12) == chord.bass
+
+        return listOf(
+            admissibleFingerings.filter(::rightBass).removeDuplicate() to "normal:",
+            admissibleBarreFingerings.filter(::rightBass).removeDuplicate() to "barré:",
+            admissibleFingerings.filterNot(::rightBass).removeDuplicate() to "no bass:",
+            admissibleBarreFingerings.filterNot(::rightBass).removeDuplicate() to "barré,\n no bass:"
+        )
+    }
+
+    private fun Chord.prepare() {
+        bass = bass ?: 0
+        intervals[bass!!] = true
+        intervals2pitches()
+    }
+
+    private fun getAdmissibleFrets(chord: Chord): List<List<Int>> {
         val admissibleFrets = List(tuning.size) { mutableListOf<Int>() }
 
         for (i in tuning.indices) {
@@ -68,6 +89,12 @@ class FretEngine(private val tuning: List<Int>) {
             }
         }
 
+        return admissibleFrets
+    }
+
+    private fun getPotentialFingerings(chord: Chord, admissibleFrets: List<List<Int>>): List<Fingering> {
+        val potentialFingerings = mutableListOf<Fingering>()
+
         val different = chord.intervals.count { it }
         val chosen = Intervals()
         val chosenFrets = ArrayDeque<Int>()
@@ -76,7 +103,7 @@ class FretEngine(private val tuning: List<Int>) {
         fun dfs(depth: Int, low: Int, high: Int) {
             if (high - low > 2) return
             if (depth == tuning.size) {
-                if (chosenN == different) ans.add(Fingering(chosenFrets.toList()))
+                if (chosenN == different) potentialFingerings.add(Fingering(chosenFrets.toList()))
             } else {
                 for (fret in admissibleFrets[depth]) {
                     val note = (fret + tuning[depth]).mod(12)
@@ -104,20 +131,7 @@ class FretEngine(private val tuning: List<Int>) {
 
         dfs(0, 13, 0)
 
-        val admissibleFingerings = ans.filter { it.admissible() }.sortedBy(Fingering::minFret)
-        val admissibleBarreFingerings =
-            ans.map { it.toBare() }.filter { it.admissible() }.sortedBy(Fingering::minFret)
-                .filterNot { it.barre!!.from == tuning.size - 1 }
-
-        fun rightBass(fingering: Fingering): Boolean =
-            fingering.frets.reversed().zip(tuning.reversed()).map { it.first + it.second }.min().mod(12) == chord.bass
-
-        return listOf(
-            admissibleFingerings.filter(::rightBass).removeDuplicate() to "normal:",
-            admissibleBarreFingerings.filter(::rightBass).removeDuplicate() to "barré:",
-            admissibleFingerings.filterNot(::rightBass).removeDuplicate() to "no bass:",
-            admissibleBarreFingerings.filterNot(::rightBass).removeDuplicate() to "barré,\n no bass:"
-        )
+        return potentialFingerings
     }
 
     private fun Fingering.admissible(): Boolean =
